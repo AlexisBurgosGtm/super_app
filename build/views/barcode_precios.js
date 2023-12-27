@@ -47,7 +47,7 @@ function getView(){
                 <div class="col-6">
                     <div class="card card-rounded shadow col-12">
                         <div class="card-body" id="barcode_container">
-
+                            <ul id="barcode-list"></ul>
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@ async function getBarcode(){
 
 
     if('BarcodeDetector' in window ){
-        console.log('Barcode Detector supported!');
+        detect();
     }else{
         console.log('Barcode Detector is not supported in this browser');
         container.innerHTML = 'No se puede usar Barcode en este dispositivo';
@@ -92,36 +92,44 @@ async function getBarcode(){
     };
 
 
-    const barcodeDetector = new BarcodeDetector({
-        formats: [
-          'aztec',
-          'code_128',
-          'code_39',
-          'code_93',
-          'codabar',
-          'data_matrix',
-          'ean_13',
-          'ean_8',
-          'itf',
-          'pdf417',
-          'qr_code',
-          'upc_a',
-          'upc_e'
-        ]
-    });
-
-  
-    try {
-        const barcodes = await barcodeDetector.detect(image);
-        barcodes.forEach((barcode)=>{
-            console.log(barcode)
-            container.innerHTML = barcode;
-        });
-      } catch (e) {
-       // if the imageElement is invalid, the DOMException will be thrown
-        console.error('Barcode detection failed:', e);
-        container.innerHTML = e;
-      }
-
+     
 
 };
+
+async function detect() {
+    
+    const barcodeDetector = new BarcodeDetector();
+    const list = document.getElementById("barcode-list");
+    let itemsFound = [];
+    const mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "environment" }
+    });
+  
+    const video = document.createElement("video");
+    video.srcObject = mediaStream;
+    video.autoplay = true;
+  
+    list.before(video);
+  
+    function render() {
+      barcodeDetector
+        .detect(video)
+        .then((barcodes) => {
+          barcodes.forEach((barcode) => {
+            if (!itemsFound.includes(barcode.rawValue)) {
+              itemsFound.push(barcode.rawValue);
+              const li = document.createElement("li");
+              li.innerHTML = barcode.rawValue;
+              list.appendChild(li);
+            }
+          });
+        })
+        .catch(console.error);
+    }
+  
+    (function renderLoop() {
+      requestAnimationFrame(renderLoop);
+      render();
+    })();
+}
+ 
