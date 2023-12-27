@@ -38,8 +38,9 @@ function getView(){
         vista_barcode:()=>{
             return `
             <div class="row">
+                Rev. 11:53
                 <div class="card-body" id="barcode_container">
-                    <ul id="barcode-list"></ul>
+                    
                 </div>
             </div>
             <div class="row">
@@ -47,7 +48,7 @@ function getView(){
                     <div class="card card-rounded shadow col-12">
                         <div class="card-body">
 
-                        
+                            <ul id="barcode-list"></ul>
                         </div>
                     </div>
                 </div>
@@ -104,6 +105,8 @@ async function getBarcode(){
 };
 
 async function detect() {
+
+    let root_barcode = document.getElementById('barcode_container')
     
     const barcodeDetector = new BarcodeDetector();
     const list = document.getElementById("barcode-list");
@@ -113,12 +116,14 @@ async function detect() {
     });
   
     const video = document.createElement("video");
-    video.width=50;
-    video.height=50;
+    video.width=250;
+    video.height=250;
     video.srcObject = mediaStream;
     video.autoplay = true;
   
     list.before(video);
+
+    root_barcode.appendChild(video);
   
     function render() {
       barcodeDetector
