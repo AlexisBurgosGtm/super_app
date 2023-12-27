@@ -38,16 +38,23 @@ function getView(){
         vista_barcode:()=>{
             return `
             <div class="row">
+                <div class="card-body" id="barcode_container">
+                    <ul id="barcode-list"></ul>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-6">
                     <div class="card card-rounded shadow col-12">
                         <div class="card-body">
+
+                        
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="card card-rounded shadow col-12">
-                        <div class="card-body" id="barcode_container">
-                            <ul id="barcode-list"></ul>
+                        <div class="card-body" id="">
+                            
                         </div>
                     </div>
                 </div>
@@ -106,6 +113,8 @@ async function detect() {
     });
   
     const video = document.createElement("video");
+    video.width=50;
+    video.height=50;
     video.srcObject = mediaStream;
     video.autoplay = true;
   
