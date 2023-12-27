@@ -1,0 +1,3 @@
+
+
+Navegar.barcode_precios();

@@ -1,0 +1,18 @@
+{
+  "name": "super_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "nodemon server.js"
+  },
+  "author": "Alexis Burgos",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "mssql": "^10.0.1",
+    "nodemon": "^3.0.2",
+    "socket.io": "^4.7.2"
+  }
+}
